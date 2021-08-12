@@ -2,15 +2,15 @@
     "swagger":     "2.0",
     "info":        {
         "title":          "Discord API",
-        "version":        "v6",
+        "version":        "v9",
         "description":    "Non Official DiscordAPI Swagger Specification",
-        "termsOfService": "https://discordapp.com/developers/docs/legal",
+        "termsOfService": "https://discord.com/developers/docs/legal",
         "contact":        {
             "name": "Discord API Server",
             "url":  "https://discord.gg/discord-api"
         }
     },
-    "host":        "discordapp.com",
+    "host":        "discord.com",
     "basePath":    "/api",
     "schemes":     [
         "https"
