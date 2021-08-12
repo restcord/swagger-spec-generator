@@ -5,8 +5,9 @@ import * as request from 'request-promise';
 import MarkdownToHtml from './MarkdownToHtml';
 import PathInterface, {HttpMethod} from './PathInterface';
 
+var fs = require('fs');
 // export const snowflakes = ['channel.id', 'guild.id', 'message.id', 'user.id', 'webhook.id'];
-const baseUrl = 'https://raw.githubusercontent.com/discordapp/discord-api-docs/master/docs';
+const baseUrl = 'https://raw.githubusercontent.com/discord/discord-api-docs/master/docs';
 
 type Category = 'resources' | 'topics';
 
@@ -19,11 +20,14 @@ const url = (type: Category, item: string) => `${baseUrl}/${type}/${item}.md`;
 
 export default class Parser {
     private categories: CategoryItem[] = [
+        {type: 'resources', name: 'Application'},
         {type: 'resources', name: 'Audit_Log'},
         {type: 'resources', name: 'Channel'},
         {type: 'resources', name: 'Emoji'},
         {type: 'resources', name: 'Guild'},
         {type: 'resources', name: 'Invite'},
+        {type: 'resources', name: 'Stage_Instance'},
+        {type: 'resources', name: 'Sticker'},
         {type: 'resources', name: 'User'},
         {type: 'resources', name: 'Voice'},
         {type: 'resources', name: 'Webhook'},
@@ -37,8 +41,16 @@ export default class Parser {
     public async getDefinition() {
         const html = await this.parseGithub();
         writeFileSync(process.cwd() + '/test.html', html.html());
+        //@ts-ignore
         const [paths, definitions] = await this.parseHtml(html);
-        console.log(paths, definitions);
+        //console.log(paths, definitions);
+        console.dir(paths, {depth: null, maxArrayLength: null});
+        fs.writeFile('json/paths.json', JSON.stringify(paths), 'utf8', function(err){
+            if(err){ 
+                  console.log(err); 
+            } else {
+                  //Everything went OK!
+            }});
     }
 
     private async parseGithub(): Promise<Cheerio> {
@@ -56,7 +68,7 @@ export default class Parser {
 
     private async parseHtml(html: Cheerio): Promise<[PathInterface[], any[]]> {
         const paths: PathInterface[] = [];
-        // const definitions: any[] = [];
+        //const definitions: any[] = [];
 
         html.find('div.category').each((_categoryIndex, categoryElement) => {
             const $categoryElement = $(categoryElement);
