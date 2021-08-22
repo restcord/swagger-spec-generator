@@ -18,7 +18,6 @@ export default class {
 
     private readonly selector: Cheerio;
 
-    // @ts-ignore
     private readonly paths: Cheerio;
 
     private readonly definitions: Cheerio;
